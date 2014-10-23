@@ -1,0 +1,11 @@
+.wbwell {
+	text-shadow:0 1px 0 white;
+	border:1px solid rgba(0, 0, 0, .1);
+	padding:10px;
+	
+	-moz-border-radius: 6px;
+	-khtml-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+}
+ 

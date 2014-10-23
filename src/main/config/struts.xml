@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+<!-- 打开struts的开发着模式，有问题的时候打出堆栈 -->
+	<constant name="struts.devMode" value="true" />
+	<!-- struts 的action 的结尾 -->
+	<constant name="struts.action.extension" value="do"/>
+	<!-- struts 的包名 表示默认的 -->
+	<package name="basicstruts2" extends="struts-default">
+		<!--action和jsp的对应关系 ,如果不配置method 会默认调用execute方法-->
+		<!--根据url去name找，找到对应的action restule对应的是action中的返回-->
+		<action name="hello" class="org.rubby.Hello">
+			<result>/hello.jsp</result>
+		</action>
+	<action name="login" class="org.rubby.UserAction" method="Login">
+<!-- 		重定向 -->
+			<result type="redirect">/index.do</result>
+			<result name="error">/error.jsp</result>
+		</action>
+	<action name="logout" class="org.rubby.UserAction" method="Logout">
+			<result>/index.jsp</result>
+		</action>
+	<action name="register" class="org.rubby.UserAction" method="Register">
+			<result>/register.jsp</result>
+		</action>
+	<action name="index" class="org.rubby.IndexAction">
+			<result>/index.jsp</result>
+		</action>
+	<action name="follow" class="org.rubby.UserAction" method="follow">
+			<result>/error.jsp</result>
+		</action>
+	<action name="unfollow" class="org.rubby.UserAction" method="unfollow">
+			<result>/error.jsp</result>
+		</action>
+	<action name="post" class="org.rubby.UserAction" method="post">
+			<result>/error.jsp</result>
+		</action>
+	<action name="search" class="org.rubby.cdr.SearchAction">
+			<result>/cdr/search.jsp</result>
+		</action>
+	<action name="cdrindex" class="org.rubby.cdr.CdrIndexAction">
+			<result>/cdr/cdrindex.jsp</result>
+		</action>
+	<action name="cdr_daily" class="org.rubby.cdr.CdrDailyAction">
+			<result>/cdr/cdr_daily.jsp</result>
+		</action>	
+	</package>
+
+</struts>
