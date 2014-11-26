@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.hadoop.hbase.avro.generated.HBase;
 
 import com.opensymphony.xwork2.ActionSupport;
 
