@@ -16,7 +16,7 @@ public class Consumer {
 		//需要远程执行的方法
 		 Method method = SayHelloService.class.getMethod("sayHello", java.lang.String.class);
 		 //需要传递到远端的参数
-		 Object [] arguments = {"hello"};
+		 Object [] arguments = {"hello11"};
 		 //服务端的地址，这里写本地
 		 Socket socket = new Socket("127.0.0.1",1234);
 		 //将方法名称和参数序列化传递到远端
