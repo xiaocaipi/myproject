@@ -18,4 +18,22 @@
 <!-- 对所有请求都做过滤-->
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+	  <servlet>
+        <servlet-name>digestServiceConsumer</servlet-name>
+        <servlet-class>org.bigfenbushi.security.DigestServiceConsumer</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>digestServiceConsumer</servlet-name>
+        <url-pattern>/digestServiceConsumer</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>digestServiceProvider</servlet-name>
+        <servlet-class>org.bigfenbushi.security.DigestServiceProvider</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>digestServiceProvider</servlet-name>
+        <url-pattern>/digestServiceProvider</url-pattern>
+    </servlet-mapping>
 </web-app>

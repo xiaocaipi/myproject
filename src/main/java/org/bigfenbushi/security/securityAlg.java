@@ -24,25 +24,45 @@ public class securityAlg {
 	
 	public static void main(String[] args) throws Exception  {
 		String testString ="i m menu,hi";
-		//md5 base64算法编码后
-		System.out.println("md5 base64算法编码后  "+byte2base64(testMd5(testString)));
-		//AES 加密 base64算法编码后
-		String base64AesKey = genkeyAES();
-		String encoAes= byte2base64(encryAes(testString.getBytes("utf-8"),loadKeyAes(base64AesKey)));
-		System.out.println("AES 加密 base64算法编码后  =  "+encoAes);
-		//AES 解密
-		byte[] decoAesByte = decryptAES(base642byte(encoAes), loadKeyAes(base64AesKey));
-		System.out.println("AES 解密后  =  "+new String(decoAesByte));
-		//rsa 生成公钥和私钥
-		KeyPair keypair = getKeyPair();
-		String publicKey = getPublicKey(keypair);
-		String privateKey = getPrivate(keypair);
-		System.out.println("publicKey = "+publicKey+"   privateKey ="+privateKey);
-		//用私钥 加密数据
-		byte [] privateKeyEncryptByte = privateEncrypt(testString.getBytes("utf-8"), string2Privatekey(privateKey));
-		//用公钥 解密 并打印
-		byte [] decryptStringByte = publicDecrypt(privateKeyEncryptByte, string2Publickey(publicKey));
-		System.out.println("用公钥 解密   = "+new String(decryptStringByte));
+//		//md5 base64算法编码后
+//		System.out.println("md5 base64算法编码后  "+byte2base64(testMd5(testString)));
+//		//AES 加密 base64算法编码后
+//		String base64AesKey = genkeyAES();
+//		String encoAes= byte2base64(encryAes(testString.getBytes("utf-8"),loadKeyAes(base64AesKey)));
+//		System.out.println("AES 加密 base64算法编码后  =  "+encoAes);
+//		//AES 解密
+//		byte[] decoAesByte = decryptAES(base642byte(encoAes), loadKeyAes(base64AesKey));
+//		System.out.println("AES 解密后  =  "+new String(decoAesByte));
+//		//rsa 生成公钥和私钥
+//		KeyPair keypair = getKeyPair();
+//		String publicKey = getPublicKey(keypair);
+//		String privateKey = getPrivate(keypair);
+//		System.out.println("publicKey = "+publicKey+"   privateKey ="+privateKey);
+//		//用私钥 加密数据
+//		byte [] privateKeyEncryptByte = privateEncrypt(testString.getBytes("utf-8"), string2Privatekey(privateKey));
+//		//用公钥 解密 并打印
+//		byte [] decryptStringByte = publicDecrypt(privateKeyEncryptByte, string2Publickey(publicKey));
+//		System.out.println("用公钥 解密   = "+new String(decryptStringByte));
+		
+		//使用数字签名
+		//先得到keypari 
+		KeyPair keyPair = getKeyPair();
+		String publicKey = getPublicKey(keyPair);
+		String privateKey = getPrivate(keyPair);
+		System.out.println(publicKey);
+		System.out.println("-----");
+		System.out.println(privateKey);
+		System.out.println("-----");
+		
+		PublicKey publics = string2Publickey(publicKey);
+		PrivateKey privates = string2Privatekey(privateKey);
+		
+		//生成签名
+		byte [] sign = sign(testString.getBytes(), privates);
+		//校验签名
+		boolean verify = verify(testString.getBytes(), sign, publics);
+		System.out.println(verify);
+		
 		
 	}
 	
@@ -137,5 +157,30 @@ public class securityAlg {
 		byte [] bytes = cipher.doFinal(content);
 		return bytes;
 	}
+	//数字签名的生成
+	private static byte[] sign(byte [] content ,PrivateKey privateKey) throws Exception{
+		MessageDigest md = MessageDigest.getInstance("SHA1");
+		byte [] bytes = md.digest(content);
+		Cipher cipher =Cipher.getInstance("RSA");
+		cipher.init(Cipher.ENCRYPT_MODE, privateKey);
+		byte [] encryptbytes = cipher.doFinal(bytes);
+		return encryptbytes;
+		
+	}
+	//数字签名的校验
+	private static boolean verify(byte [] content ,byte [] sign,PublicKey publicKey) throws Exception{
+		MessageDigest md = MessageDigest.getInstance("SHA1");
+		byte [] bytes = md.digest(content);
+		Cipher cipher =Cipher.getInstance("RSA");
+		cipher.init(Cipher.DECRYPT_MODE, publicKey);
+		byte [] decryptbytes = cipher.doFinal(sign);
+		if(byte2base64(decryptbytes).equals(byte2base64(bytes))){
+			return true;
+		}else{
+			return false;
+		}
+		
+	}
+	
 	
 }
