@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+ 
+<sqlMap namespace="SpringKms/src/com/lvmama/stock/dao/sql/ProxySql"> 
+
+		<insert id="insertProxy" 
+	       parameterClass="com.stock.vo.ProxyVo">
+		<![CDATA[
+ 			   insert into proxy_base( 
+ 					  country, 
+ 					  ip, 
+ 					  port, 
+ 					  proxyposition, 
+ 					  date, 
+ 					  status
+ 					 
+ 			       )values( 
+ 					  #country#, 
+ 					  #ip#, 
+ 					  #port#, 
+ 					  #proxyposition#, 
+ 					  now(), 
+ 					  0
+ 				) 
+				
+ 		]]> 
+	</insert>
+	
+	<select id="getProxy" parameterClass="java.util.HashMap"
+		resultClass="com.stock.vo.ProxyVo">
+		<![CDATA[ 
+			select * from proxy_base where status=0
+		 ]]>
+	</select>
+	
+	
+	<update id="updateProxy" parameterClass = "com.stock.vo.ProxyVo">
+			
+				UPDATE proxy_base k SET
+				 k.status=#status#
+				where k.id=#id#
+			
+		</update>
+	
+	
+	 
+	 
+
+</sqlMap>

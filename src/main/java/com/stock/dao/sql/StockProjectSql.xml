@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+ 
+<sqlMap namespace="SpringKms/src/com/lvmama/stock/dao/sql/StockProjectSql"> 
+
+		<insert id="insertStrocBase" 
+	       parameterClass="com.stock.vo.StockData">
+		<![CDATA[
+ 			   insert into base_stock( 
+ 					  code, 
+ 					  open, 
+ 					  close, 
+ 					  high, 
+ 					  low, 
+ 					  volume, 
+ 					  date,
+ 					  name,
+ 					  zhangdie,
+ 					  zhangdiefudu,
+ 					  dealmoney,
+ 					  huanshoulv
+ 					 
+ 			       )values( 
+ 					  #code#, 
+ 					  #open#, 
+ 					  #close#, 
+ 					  #high#, 
+ 					  #low#, 
+ 					  #volume#, 
+ 					  #date#,
+ 					  #name#,
+ 					  #zhangdie#,
+ 					  #zhangdiefudu#,
+ 					  #dealmoney#,
+ 					  #huanshoulv#
+ 				) 
+				
+ 		]]> 
+	</insert>
+	
+	
+	<insert id="insertStockCode" 
+	       parameterClass="com.stock.vo.StockCode_BaseVo">
+		<![CDATA[
+ 			   insert into stockcode_base( 
+ 					  code, 
+ 					  name,
+ 					  place
+ 			       )values( 
+ 					  #code#, 
+ 					  #name#,
+ 					  #place#
+ 				) 
+				
+ 		]]> 
+	</insert>
+	
+	<select id="getStockCode" 
+		   parameterClass="java.util.HashMap"
+		resultClass="com.stock.vo.StockCode_BaseVo">
+		<![CDATA[ 
+		 select * from kms.stockcode_base b 
+		 where b.id>=#start# and b.id<#end#
+		 ]]>
+	</select>
+	
+	
+	<insert id="insertStockTiger" 
+	       parameterClass="com.stock.vo.StockTigerVo">
+		<![CDATA[
+ 			   insert into stock_tiger( 
+ 					  code, 
+ 					  date,
+ 					  isorg,
+ 					  flag,
+ 					  num,
+ 					  tradename,
+ 					  tradebuymoney,
+ 					  tradebuyper,
+ 					  tradesellmoney,
+ 					  tradesellper,
+ 					  diff,
+ 					  stock_date_id
+ 			       )values( 
+ 					  #code#, 
+ 					  #date#,
+ 					  #isorg#,
+ 					  #flag#,
+ 					  #num#,
+ 					  #tradename#,
+ 					  #tradebuymoney#,
+ 					  #tradebuyper#,
+ 					  #tradesellmoney#,
+ 					  #tradesellper#,
+ 					  #diff#,
+ 					  #stock_date_id#
+ 				) 
+				
+ 		]]> 
+	</insert>
+	
+	
+	<select id="getStrongTigerWithTime"  
+		   parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		<![CDATA[
+			select * from 
+(
+select t.code,t.date ,sum(t.tradebuymoney)-sum(t.tradesellmoney) diff
+from kms.stock_tiger t
+where t.tradename='机构专用' 
+and t.date>'2013-01-01'
+and t.date<'2016-01-01'
+GROUP BY t.code,t.date
+) base 
+where base.diff>0
+order by base.code,base.date
+		
+		]]>  
+	</select> 
+	
+	<select id="getStockTigerFormalMaxDate"  
+		   parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		<![CDATA[
+select max(t.date) date from kms.stock_tiger t
+
+		
+		]]>  
+	</select> 
+	
+	
+		<delete id="removeRepeatData" parameterClass="java.util.HashMap">
+		<![CDATA[
+
+DELETE from stock_tiger
+where id in 
+(
+select * from 
+(select max(t.id)
+ from kms.stock_tiger t
+
+GROUP BY t.code,t.date,t.num,t.flag
+HAVING count(t.id)>1) a
+)
+		]]> 
+	</delete>
+	
+	
+ <insert id="insertCrawlerWrong" 
+	       parameterClass="com.stock.vo.CrawlerWrongVo">
+		<![CDATA[
+ 			   insert into crawler_wrong( 
+ 					  url, 
+ 					  type, 
+ 					  message, 
+ 					  date
+ 			       )values( 
+ 					  #url#, 
+ 					  #type#, 
+ 					  #message#, 
+ 					  now()
+ 				) 
+				
+ 		]]> 
+	</insert>
+	
+	
+	 <insert id="insertStockTigerDate" 
+	       parameterClass="com.stock.vo.StockTigerDateVo">
+		<![CDATA[
+ 			   insert into stock_tiger_date( 
+ 					  url, 
+ 					  tradedate, 
+ 					  date
+ 			       )values( 
+ 					  #url#, 
+ 					  #tradedate#, 
+ 					  now()
+ 				) 
+				
+ 		]]> 
+	</insert>
+	
+	<select id="getStockTigerDate"  
+		   parameterClass="java.util.HashMap"
+		resultClass="com.stock.vo.StockTigerDateVo">
+				SELECT
+					*
+				FROM
+					stock_tiger_date
+				WHERE
+					tradedate = #tradedate#	
+					AND id NOT IN (
+					SELECT
+						distinct stock_date_id
+					FROM
+						stock_tiger
+						where date =#tradedate#
+				)	
+				<isNotEmpty property="id" prepend="AND">
+					<![CDATA[
+					 id =#id#
+				   ]]>
+				</isNotEmpty>
+					and  tradedate =#tradedate#
+	</select> 
+	
+	<select id="getStockTigerDateCount"  
+		   parameterClass="java.util.HashMap"
+		resultClass="java.lang.Integer">
+		<![CDATA[
+				SELECT
+					count(*)
+				FROM
+					stock_tiger_date
+				WHERE
+					tradedate = #tradedate#		
+		]]>  
+	</select> 
+	
+	<select id="getCrawlerWrongList"  
+		   parameterClass="java.util.HashMap"
+		resultClass="com.stock.vo.CrawlerWrongVo">
+		<![CDATA[
+				SELECT * from crawler_wrong
+				where type=#type#			
+		]]>  
+	</select> 
+	
+	<delete id="deleteCrawlerWrong" parameterClass="java.util.HashMap">
+		<![CDATA[
+		DELETE from  crawler_wrong
+		where type=#type#	
+
+		]]> 
+	</delete>
+	
+	
+ 
+	<select id="getStockTiger3"  
+		   parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		<![CDATA[
+		
+			
+SELECT
+	CODE code,
+	date,
+	(
+		SELECT
+			count(*)
+		FROM
+			stock_tiger
+		WHERE
+			a. CODE = CODE
+		AND a.date = date
+		AND flag = 1
+	  and tradename = '机构专用'
+	) buynum,
+	(
+		SELECT
+			count(*)
+		FROM
+			stock_tiger
+		WHERE
+			a. CODE = CODE
+		AND a.date = date
+		AND flag = 2
+and tradename = '机构专用'
+	) sellnum
+FROM
+	stock_tiger a
+WHERE
+	a.tradename = '机构专用'
+GROUP BY
+	CODE,
+	date
+
+
+		]]>  
+	</select> 
+	
+	
+	<select id="getStockBase"  
+		   parameterClass="java.util.HashMap"
+		resultClass="com.stock.vo.StockData">
+		
+select code,date,open,close,high,low,zhangdie,zhangdiefudu,huanshoulv from base_stock where 1=1 
+			<isNotEmpty property="name" prepend="AND">
+					<![CDATA[
+					 name =#name#
+				   ]]>
+			</isNotEmpty>
+			<isNotEmpty property="code" prepend="AND">
+					<![CDATA[
+					 code =#code#
+				   ]]>
+			</isNotEmpty>
+			<isNotEmpty property="date" prepend="AND">
+					<![CDATA[
+					 date =#date#
+				   ]]>
+			</isNotEmpty>
+			<isNotEmpty property="datebegin" prepend="AND">
+					<![CDATA[
+					 date between #datebegin# and #dateend#
+				   ]]>
+			</isNotEmpty>
+			<isNotEmpty property="fudumin" prepend="AND">
+					<![CDATA[
+					 zhangdiefudu between  #fudumin# and #fudumax#
+				   ]]>
+			</isNotEmpty>
+			<isNotEmpty property="isnotzhishu" prepend="AND">
+					<![CDATA[
+					 name != '上证指数'  and  name != '创业板指' 
+				   ]]>
+			</isNotEmpty>
+				order by code,date desc
+	</select> 
+	
+	<delete id="deleteStockCode" parameterClass="java.util.HashMap">
+		<![CDATA[
+DELETE from stockcode_base where id in (
+select * from (
+select max(id) id from stockcode_base GROUP BY code ,place having count(*)>1
+) a
+)
+		]]> 
+	</delete>
+	 
+	 
+
+</sqlMap>
