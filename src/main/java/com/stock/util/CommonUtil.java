@@ -1,6 +1,9 @@
 package com.stock.util;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,7 +18,6 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.spring.kms.util.CommonTool;
 import com.stock.service.StockGetDataService;
 import com.stock.vo.CrawlerWrongVo;
 import com.stock.vo.StockData;
@@ -31,6 +33,7 @@ public class CommonUtil {
 	public static String outputpath="G:\\project\\stock\\output\\";
 	private static SimpleDateFormat fmtspecial=new SimpleDateFormat("yyyyMMdd");
 	private static SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd");
+	private static DecimalFormat df = new DecimalFormat("#.00");
 	
 	
 	public static CrawlerWrongVo getCrawlerWrongVo (String url,String type,String message){
@@ -138,10 +141,15 @@ public class CommonUtil {
 		}
 	}
 	
-
+	
 	public static void showStockRealTimeData(StockRealTimeData realTimeData) {
 		
-		System.out.println(realTimeData.getCode()+"--"+realTimeData.getClose()+"--:"+realTimeData.getZhangdiefudu()+"--"+realTimeData.getDealnowShou());
+		if(realTimeData.getCode().equals("000001")||realTimeData.getCode().equals("399006")){
+			System.out.print(realTimeData.getCode()+"--"+realTimeData.getClose()+"--:"+df.format(realTimeData.getZhangdie())+"   ");
+		}else{
+			System.out.print(realTimeData.getCode()+"--"+realTimeData.getClose()+"--:"+df.format(realTimeData.getZhangdiefudu())+"--"+realTimeData.getDealnowShou()/100+"   ");
+
+		}
 	}
 	
 	public static void fileCommonList (List<Map<String, Object>> list) {
@@ -201,6 +209,29 @@ public class CommonUtil {
 		fileCommonList(list);
 		
 		
+	}
+	
+	public static String obj2string(Object f) {
+		String returnString = "";
+		if (f instanceof Long) {
+			long tmp1 = (Long) f;
+			returnString = String.valueOf(tmp1);
+		} else if (f instanceof Integer) {
+			int tmp1 = (Integer) f;
+			returnString = String.valueOf(tmp1);
+		} else if (f instanceof BigDecimal) {
+			BigDecimal tmp1 = (BigDecimal) f;
+			returnString = tmp1.toString();
+		} else if (f instanceof BigInteger) {
+			BigInteger tmp1 = (BigInteger) f;
+			returnString = tmp1.toString();
+		} else {
+			returnString = (String) f;
+		}
+		if (StringUtils.isEmpty(returnString)) {
+			returnString = "-1";
+		}
+		return returnString;
 	}
 
 }

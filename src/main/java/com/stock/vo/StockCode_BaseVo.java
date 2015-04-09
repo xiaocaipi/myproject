@@ -2,7 +2,7 @@ package com.stock.vo;
 
 
 
-public class StockCode_BaseVo {
+public class StockCode_BaseVo extends BaseDto {
 
 	private long id;
 	
