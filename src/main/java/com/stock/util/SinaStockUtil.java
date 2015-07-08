@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,14 +18,19 @@ import com.stock.vo.StockData;
 import com.stock.vo.StockRealTimeData;
 
 public class SinaStockUtil {
+	
 	public static void main(String args[]) throws Exception {
 			 
 		   
-		alertprice();
+//		alertprice();
+		Map<String, Object> paraMap = new HashMap<String, Object>();
+		paraMap.put("code", "sh600260,sh600111,sh600332,sh600030,sh600392,sh000001,sz399006");
+		showRTData(paraMap);
 	}
 	
-	public static void showRTData() throws InterruptedException{
-		String paracode ="sz002727,sz300063";
+	public static void showRTData(Map<String, Object> paraMap) throws InterruptedException{
+		
+		 String paracode =CommonUtil.obj2string(paraMap.get("code"));
 		 List<StockRealTimeData> list1=getRealTimeDataHasLast(paracode,null);
 		 Map<String, StockRealTimeData> refMap =new HashMap<String, StockRealTimeData>();
 		 for(StockRealTimeData realTimeData :list1){
@@ -43,8 +49,8 @@ public class SinaStockUtil {
 		 }
 	}
 	
-	public static void alertprice() throws InterruptedException{
-		String paracode ="sz002727,sz300063";
+	public static void alertprice(Map<String, Object> paraMap) throws InterruptedException{
+		 String paracode =CommonUtil.obj2string(paraMap.get("code"));
 		 List<StockRealTimeData> list1=getRealTimeDataHasLast(paracode,null);
 		 Map<String, StockRealTimeData> refMap =new HashMap<String, StockRealTimeData>();
 		 for(StockRealTimeData realTimeData :list1){

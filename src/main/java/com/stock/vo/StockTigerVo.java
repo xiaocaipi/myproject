@@ -2,7 +2,7 @@ package com.stock.vo;
 
 
 
-public class StockTigerVo {
+public class StockTigerVo extends BaseDto {
 
 	
 	private String id;

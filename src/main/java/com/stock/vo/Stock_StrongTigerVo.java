@@ -1,7 +1,7 @@
 package com.stock.vo;
 
 
-public class Stock_StrongTigerVo  {
+public class Stock_StrongTigerVo extends BaseDto {
 
 	private String id;
 
