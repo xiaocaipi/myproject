@@ -17,9 +17,9 @@ public class IPCServer {
 		IPCTestImpl service = new IPCTestImpl();
 		//   通过RPC.getServer 来创建一个tcpid的server 第二个是ip地址 这里是全0 表明在当前主机的所有ip上，都监听这个端口
 		//5 是指5个handler 线程，是指调用5个handler 线程来 处理请求
-		Server s = RPC.getServer(service, "0.0.0.0", IPC_PORT, 5, false, new Configuration());
+//		Server s = RPC.getServer(service, "0.0.0.0", IPC_PORT, 5, false, new Configuration());
 		//start 是异步的方法，调用之后会立刻返回
-		s.start();
+//		s.start();
 		//需要在server 中对当前的线程做死循环
 		while(true){
 			Thread.sleep(10000000);

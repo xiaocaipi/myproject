@@ -2,6 +2,8 @@ package org.spring.mr.hadooppic;
 
 
 import java.io.IOException;
+
+import org.apache.hadoop.ipc.ProtocolSignature;
 //接口在server端的实现
 public class IPCTestImpl implements IPCTest{
 
@@ -19,6 +21,13 @@ public class IPCTestImpl implements IPCTest{
 	public int add(int a, int b) {
 		// TODO Auto-generated method stub
 		return a+b;
+	}
+
+	@Override
+	public ProtocolSignature getProtocolSignature(String arg0, long arg1,
+			int arg2) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

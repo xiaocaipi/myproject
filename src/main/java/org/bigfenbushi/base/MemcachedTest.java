@@ -1,7 +1,5 @@
 package org.bigfenbushi.base;
 
-import com.danga.MemCached.MemCachedClient;
-import com.danga.MemCached.SockIOPool;
 
 public class MemcachedTest {
 

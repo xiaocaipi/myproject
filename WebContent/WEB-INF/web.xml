@@ -36,4 +36,15 @@
         <servlet-name>digestServiceProvider</servlet-name>
         <url-pattern>/digestServiceProvider</url-pattern>
     </servlet-mapping>
+    
+     <servlet>
+        <servlet-name>testBtraceServ</servlet-name>
+        <servlet-class>org.bigfenbushi.stability.TestBtraceServ</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>testBtraceServ</servlet-name>
+        <url-pattern>/testBtraceServ</url-pattern>
+    </servlet-mapping>
+    
+    
 </web-app>

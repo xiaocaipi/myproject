@@ -377,7 +377,7 @@ public class HbaseIf {
 	public static void main(String[] args) throws Exception {
 	HbaseIf h=new HbaseIf();
 	h.creteTables();
-//	h.createNewUser("kaka1", "123456");
+	h.createNewUser("kaka1", "123456");
 //	h.createNewUser("kaka2", "123456");
 //	h.createNewUser("kaka3", "123456");
 //	h.createNewUser("kaka4", "123456");
