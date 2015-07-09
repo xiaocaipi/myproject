@@ -300,6 +300,13 @@
 			<artifactId>hbase-client</artifactId>
 			<version>0.98.3-hadoop2</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-client</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+		
 
 		<dependency>
 			<groupId>org.apache.struts</groupId>
@@ -319,11 +326,6 @@
 			<version>1.4.4</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.apache.zookeeper</groupId>
-			<artifactId>zookeeper</artifactId>
-			<version>3.4.4</version>
-		</dependency>
 
 		<dependency>
 			<groupId>com.101tec</groupId>
@@ -331,18 +333,6 @@
 			<version>0.2</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.apache.hbase</groupId>
-			<artifactId>hbase-common</artifactId>
-			<version>0.98.3-hadoop2</version>
-		</dependency>
-
-
-		<dependency>
-			<groupId>org.apache.hbase</groupId>
-			<artifactId>hbase-client</artifactId>
-			<version>0.98.3-hadoop2</version>
-		</dependency>
 
 
 	</dependencies>

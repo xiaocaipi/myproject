@@ -36,7 +36,6 @@ public class HbaseIf {
 		//默认不写的是自动去连本地的zookeeper
 		conf=HBaseConfiguration.create();
 		//不是单机的话，就要设置zookeeper的地址，前面参数是链接参数，后面是一个地址的列表，按照顺序链接
-		//conf.set("hbase.zookeeper.quorum", "zk1.foo.com,zk2.foo.com");
 	}
 	
 	public static HbaseIf getInstance(){
@@ -376,8 +375,8 @@ public class HbaseIf {
 	
 	public static void main(String[] args) throws Exception {
 	HbaseIf h=new HbaseIf();
-	h.creteTables();
-	h.createNewUser("kaka1", "123456");
+//	h.creteTables();
+//	h.createNewUser("kaka1", "123456");
 //	h.createNewUser("kaka2", "123456");
 //	h.createNewUser("kaka3", "123456");
 //	h.createNewUser("kaka4", "123456");
@@ -387,7 +386,7 @@ public class HbaseIf {
 //	h.follow("kaka1", "kaka4");
 //	h.post("kaka2", "test11111");
 //	h.unfollow("kaka1", "kaka2");
-//	h.getFollow("kaka1");
-//	h.getPost("kaka1");
+	h.getFollow("kaka1");
+	h.getPost("kaka1");
 }
 }
